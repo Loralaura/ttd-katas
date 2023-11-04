@@ -39,19 +39,59 @@ export function convertToNumerals(int: number) {
 }
 
 export function convertToInt(numerals: string) {
-  return true;
-}
+  let numeralCheck = numerals;
+  let thousands = 0;
 
-/* Ideas?
--
-- Break down number into thousands, hundreds, tens, and single digits
-- For each, do a case select one through 9, substituting in I for C for X etc...
-- ???
-- Great success!
--
-- Converting back
-- ... The same in reverse, I suppose
-- Split using I, C, X etc
-- Case select 1-9 (in this case, i - ix)
-- Accumulate total in a variable
-*/
+  for (let i = 0; i < 3 && numeralCheck[i]; i++) {
+    if (numeralCheck[i] === "M") {
+      numeralCheck.replace(numeralCheck[i], " ");
+      thousands++;
+    } else {
+      break;
+    }
+  }
+
+  const ones = convertNumeral(numeralCheck, "I", "V", "X");
+  const tens = convertNumeral(numeralCheck, "X", "L", "C");
+  const hundreds = convertNumeral(numeralCheck, "C", "D", "M");
+
+  function convertNumeral(
+    numerals: string,
+    ones_sign: string,
+    fives_sign: string,
+    tens_sign: string
+  ) {
+    if (numerals.includes(ones_sign + tens_sign)) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 2);
+      return "9";
+    } else if (numerals.includes(fives_sign + ones_sign.repeat(3))) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 4);
+      return "8";
+    } else if (numerals.includes(fives_sign + ones_sign.repeat(2))) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 3);
+      return "7";
+    } else if (numerals.includes(fives_sign + ones_sign)) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 2);
+      return "6";
+    } else if (numerals.includes(ones_sign + fives_sign)) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 2);
+      return "4";
+    } else if (numerals.includes(fives_sign)) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 1);
+      return "5";
+    } else if (numerals.includes(ones_sign.repeat(3))) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 3);
+      return "3";
+    } else if (numerals.includes(ones_sign.repeat(2))) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 2);
+      return "2";
+    } else if (numerals.includes(ones_sign)) {
+      numeralCheck = numeralCheck.substring(0, numeralCheck.length - 1);
+      return "1";
+    } else {
+      return "0";
+    }
+  }
+
+  return Number(`${thousands + hundreds + tens + ones}`);
+}

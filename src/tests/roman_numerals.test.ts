@@ -45,17 +45,6 @@ describe("convertToNumerals", () => {
 });
 
 describe("convertToInt", () => {
-  test("test1", () => {
-    expect(convertToInt("IV")).toBe(true);
-    expect(convertToInt("IV")).toBe(true);
-  });
-
-  test("test2", () => {
-    expect(convertToInt("IV")).toBe(true);
-  });
-});
-
-describe("convertToInt", () => {
   test("Convert an integer from 1-10 into roman numerals", () => {
     expect(convertToInt("I")).toBe(1);
     expect(convertToInt("IV`")).toBe(4);
