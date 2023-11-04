@@ -1,4 +1,4 @@
-var convertDigit = function (
+function convertDigit(
   num: number,
   ones_sign: string,
   fives_sign: string,
@@ -26,7 +26,7 @@ var convertDigit = function (
     case 9:
       return ones_sign + tens_sign;
   }
-};
+}
 
 //converts each digit into a numeral one by one
 export function convertToNumerals(int: number) {
